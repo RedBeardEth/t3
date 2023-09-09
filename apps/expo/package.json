@@ -1,5 +1,5 @@
 {
-  "name": "@acme/expo",
+  "name": "@realms-world/expo",
   "version": "0.1.0",
   "private": true,
   "main": "index.tsx",
@@ -37,11 +37,11 @@
     "superjson": "1.13.1"
   },
   "devDependencies": {
-    "@acme/api": "^0.1.0",
-    "@acme/eslint-config": "^0.2.0",
-    "@acme/prettier-config": "^0.1.0",
-    "@acme/tailwind-config": "^0.1.0",
-    "@acme/tsconfig": "^0.1.0",
+    "@realms-world/api": "^0.1.0",
+    "@realms-world/eslint-config": "^0.2.0",
+    "@realms-world/prettier-config": "^0.1.0",
+    "@realms-world/tailwind-config": "^0.1.0",
+    "@realms-world/tsconfig": "^0.1.0",
     "@babel/core": "^7.22.15",
     "@babel/preset-env": "^7.22.15",
     "@babel/runtime": "^7.22.15",
@@ -56,9 +56,9 @@
   "eslintConfig": {
     "root": true,
     "extends": [
-      "@acme/eslint-config/base",
-      "@acme/eslint-config/react"
+      "@realms-world/eslint-config/base",
+      "@realms-world/eslint-config/react"
     ]
   },
-  "prettier": "@acme/prettier-config"
+  "prettier": "@realms-world/prettier-config"
 }

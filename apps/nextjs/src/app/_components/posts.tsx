@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-
-import { api } from "~/utils/api";
-import type { RouterOutputs } from "~/utils/api";
+import { api } from "@/utils/api";
+import type { RouterOutputs } from "@/utils/api";
 
 export function CreatePostForm() {
   const context = api.useContext();
@@ -11,11 +10,11 @@ export function CreatePostForm() {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
 
-  const { mutateAsync: createPost, error } = api.post.create.useMutation({
+  const { mutateAsync: createPost, error } = api.beasts.create.useMutation({
     async onSuccess() {
       setTitle("");
       setContent("");
-      await context.post.all.invalidate();
+      await context.beasts.all.invalidate();
     },
   });
 
@@ -26,12 +25,12 @@ export function CreatePostForm() {
         e.preventDefault();
         try {
           await createPost({
-            title,
-            content,
+            owner,
+            token_id,
           });
           setTitle("");
           setContent("");
-          await context.post.all.invalidate();
+          await context.beasts.all.invalidate();
         } catch {
           // noop
         }
@@ -71,9 +70,9 @@ export function CreatePostForm() {
 }
 
 export function PostList() {
-  const [posts] = api.post.all.useSuspenseQuery();
+  const [beasts] = api.beasts.all.useSuspenseQuery();
 
-  if (posts.length === 0) {
+  if (beasts.length === 0) {
     return (
       <div className="relative flex w-full flex-col gap-4">
         <PostCardSkeleton pulse={false} />
@@ -89,7 +88,7 @@ export function PostList() {
 
   return (
     <div className="flex w-full flex-col gap-4">
-      {posts.map((p) => {
+      {beasts.map((p) => {
         return <PostCard key={p.id} post={p} />;
       })}
     </div>
@@ -97,23 +96,25 @@ export function PostList() {
 }
 
 export function PostCard(props: {
-  post: RouterOutputs["post"]["all"][number];
+  post: RouterOutputs["beasts"]["all"][number];
 }) {
   const context = api.useContext();
-  const deletePost = api.post.delete.useMutation();
+  const deletePost = api.beasts.delete.useMutation();
 
   return (
     <div className="flex flex-row rounded-lg bg-white/10 p-4 transition-all hover:scale-[101%]">
       <div className="flex-grow">
-        <h2 className="text-2xl font-bold text-pink-400">{props.post.title}</h2>
-        <p className="mt-2 text-sm">{props.post.content}</p>
+        <h2 className="text-2xl font-bold text-pink-400">
+          {props.post.token_id}
+        </h2>
+        <p className="mt-2 text-sm">{props.post.owner}</p>
       </div>
       <div>
         <button
           className="cursor-pointer text-sm font-bold uppercase text-pink-400"
           onClick={async () => {
             await deletePost.mutateAsync(props.post.id);
-            await context.post.all.invalidate();
+            await context.beasts.all.invalidate();
           }}
         >
           Delete
